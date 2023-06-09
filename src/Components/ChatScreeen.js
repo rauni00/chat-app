@@ -18,7 +18,7 @@ const ChatScreen = () => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = new WebSocket('ws://localhost:8000');
+    const newSocket = new WebSocket('ws://chat-app-backend-tzmq.onrender.com');
     newSocket.onopen = () => {
       console.log('Connected to WebSocket server');
     };
