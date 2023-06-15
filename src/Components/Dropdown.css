@@ -1,0 +1,12 @@
+.dropdown-container {
+  margin-bottom: 10px;
+  margin-left: 99px;
+}
+
+.dropdown-select {
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 200px;
+}

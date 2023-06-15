@@ -88,3 +88,35 @@
   background-color: #bdc3c7;
   cursor: not-allowed;
 }
+
+.status-light {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: red; /* Default color for offline */
+  display: inline-block;
+}
+
+.status-light.online {
+  background-color: green; /* Color for online */
+}
+.status-light.busy {
+  background-color: red; /* Color for busy */
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.status-light.blink {
+  margin-bottom: 0px;
+  animation: blink 1.5s infinite;
+}
