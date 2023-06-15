@@ -16,8 +16,8 @@ const Header = ({ name }) => {
 const ChatScreen = () => {
   let currUser = JSON.parse(localStorage.getItem('users'));
   let targetUsers = JSON.parse(localStorage.getItem('targetUser'));
-  const [messages, setMessages] = useState([]);
   let msg = JSON.parse(localStorage.getItem('chatMsg'));
+  const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [socket, setSocket] = useState(null);
@@ -50,6 +50,15 @@ const ChatScreen = () => {
                   : 'sender',
             },
           ]);
+          if (msg) {
+            console.log('chala');
+            localStorage.setItem(
+              'chatMsg',
+              JSON.stringify([...msg, targetMessage])
+            );
+          } else {
+            localStorage.setItem('chatMsg', JSON.stringify([targetMessage]));
+          }
         }
       });
     };
@@ -77,7 +86,11 @@ const ChatScreen = () => {
   }, []);
 
   useEffect(() => {
-    getTargetUser(targetUsers);
+    if (targetUsers) {
+      getTargetUser(targetUsers);
+    } else {
+      localStorage.removeItem('chatMsg');
+    }
   }, []);
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -104,9 +117,13 @@ const ChatScreen = () => {
       };
       setIsSending(true);
       setTimeout(() => {
-        console.log(newMessage);
         socket.send(JSON.stringify(newMessage));
         setMessages([...messages, newMessage]);
+        if (msg) {
+          localStorage.setItem('chatMsg', JSON.stringify([...msg, newMessage]));
+        } else {
+          localStorage.setItem('chatMsg', JSON.stringify([newMessage]));
+        }
         setInputValue('');
         setIsSending(false);
       }, 100);
@@ -123,6 +140,10 @@ const ChatScreen = () => {
         console.log(err);
       });
   };
+  const changeTarget = () => {
+    localStorage.removeItem('targetUser');
+    setTargetUser(null);
+  };
   return (
     <div className='chat-screen'>
       <Header name={currUser.name} />
@@ -133,7 +154,17 @@ const ChatScreen = () => {
               targetUser.isActive ? 'online' : 'busy'
             } blink`}
           ></div>
-          <span style={{ marginLeft: 10 }}>{targetUser.name}</span>
+          <span style={{ marginLeft: 10 }}>
+            {targetUser.name}{' '}
+            {!targetUser.isActive && (
+              <span>
+                is not Active
+                <button className='small-change-button' onClick={changeTarget}>
+                  change
+                </button>
+              </span>
+            )}
+          </span>
         </>
       )}
       {!targetUser && (
