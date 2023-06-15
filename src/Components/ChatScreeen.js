@@ -30,8 +30,8 @@ const ChatScreen = () => {
     if (targetUsers) {
       setTargetUser(targetUsers);
     }
-    // const newSocket = new WebSocket('wss://chat-app-backend-tzmq.onrender.com');
-    const newSocket = new WebSocket('ws://localhost:8000');
+    const newSocket = new WebSocket('wss://chat-app-backend-tzmq.onrender.com');
+    // const newSocket = new WebSocket('ws://localhost:8000');
     newSocket.onopen = () => {
       console.log('Connected to WebSocket server');
       updateIsActiveStatus(true);
